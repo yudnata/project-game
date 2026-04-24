@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Dinding tebing -->
+  <path d="M 12 48 L 116 48 L 116 116 L 12 116 Z" fill="#4c3d36"/>
+  <path d="M 16 48 L 16 116 M 32 48 L 32 116 M 64 48 L 64 116 M 96 48 L 96 116 M 112 48 L 112 116" stroke="#362823" stroke-width="4"/>
+  <!-- Retakan tebing -->
+  <path d="M 32 80 L 64 64 M 64 96 L 96 80" stroke="#362823" stroke-width="3" fill="none"/>
+  <!-- Atap tebing berumput -->
+  <path d="M 0 48 C 16 20 112 20 128 48 C 120 60 8 60 0 48 Z" fill="#50a061"/>
+  <!-- Layer bawah tebing -->
+  <path d="M 0 48 C 16 20 112 20 128 48" fill="none" stroke="#66c076" stroke-width="6"/>
+  <!-- Bunga/jamur di tebing -->
+  <ellipse cx="24" cy="42" rx="4" ry="2" fill="#d16b9f"/>
+  <ellipse cx="90" cy="38" rx="5" ry="3" fill="#d16b9f"/>
+  <!-- Bayangan dasar -->
+  <path d="M 8 116 L 120 116 L 110 124 L 18 124 Z" fill="#000" opacity="0.3"/>
+</svg>

@@ -1,4 +1,11 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/tiles/water_tile.svg" id="1_water_tex"]
+[ext_resource type="Texture2D" path="res://assets/art/objects/rock_small.svg" id="2_rock_tex"]
+[ext_resource type="Texture2D" path="res://assets/art/objects/tree_small.svg" id="3_tree_tex"]
+[ext_resource type="Texture2D" path="res://assets/art/objects/cliff.svg" id="4_cliff_tex"]
+[ext_resource type="Script" path="res://scripts/world/farm_land.gd" id="5_farm_script"]
+[ext_resource type="PackedScene" path="res://scenes/enemy/DummyEnemy.tscn" id="6_dummy_enemy"]
 
 [sub_resource type="RectangleShape2D" id="1_pond_shape"]
 size = Vector2(72, 52)
@@ -8,15 +15,39 @@ size = Vector2(44, 30)
 
 [node name="World" type="Node2D"]
 
+[node name="FarmLand" type="Node2D" parent="."]
+script = ExtResource("5_farm_script")
+
+[node name="CliffBack" type="Sprite2D" parent="."]
+position = Vector2(20, -118)
+texture = ExtResource("4_cliff_tex")
+scale = Vector2(0.78, 0.78)
+
+[node name="TreeLeft" type="Sprite2D" parent="."]
+position = Vector2(-198, -108)
+texture = ExtResource("3_tree_tex")
+
+[node name="TreeRight" type="Sprite2D" parent="."]
+position = Vector2(204, -96)
+texture = ExtResource("3_tree_tex")
+
+[node name="RockTop" type="Sprite2D" parent="."]
+position = Vector2(-58, -104)
+texture = ExtResource("2_rock_tex")
+
+[node name="RockBottom" type="Sprite2D" parent="."]
+position = Vector2(170, 104)
+texture = ExtResource("2_rock_tex")
+
 [node name="Pond" type="StaticBody2D" parent="."]
-position = Vector2(140, 80)
+position = Vector2(150, 86)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pond"]
 shape = SubResource("1_pond_shape")
 
-[node name="Visual" type="Polygon2D" parent="Pond"]
-color = Color(0.15, 0.45, 0.86, 1)
-polygon = PackedVector2Array(-36, -26, 36, -26, 36, 26, -36, 26)
+[node name="Visual" type="Sprite2D" parent="Pond"]
+texture = ExtResource("1_water_tex")
+scale = Vector2(2.6, 1.8)
 
 [node name="Rock" type="StaticBody2D" parent="."]
 position = Vector2(-120, -20)
@@ -24,6 +55,8 @@ position = Vector2(-120, -20)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Rock"]
 shape = SubResource("2_rock_shape")
 
-[node name="Visual" type="Polygon2D" parent="Rock"]
-color = Color(0.4, 0.4, 0.4, 1)
-polygon = PackedVector2Array(-22, -15, 22, -15, 22, 15, -22, 15)
+[node name="Visual" type="Sprite2D" parent="Rock"]
+texture = ExtResource("2_rock_tex")
+
+[node name="DummyEnemy" parent="." instance=ExtResource("6_dummy_enemy")]
+position = Vector2(56, -72)

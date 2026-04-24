@@ -1,20 +1,65 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://cl5mbb8bsjk1u"]
 
 [ext_resource type="PackedScene" path="res://scenes/world/World.tscn" id="1_world"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_player"]
+[ext_resource type="Script" uid="uid://c75uf64jp7xg6" path="res://scripts/camera/camera_follow.gd" id="3_camera_follow"]
+[ext_resource type="Script" path="res://scripts/main/main.gd" id="4_main_script"]
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" unique_id=349983578]
+script = ExtResource("4_main_script")
 
-[node name="World" parent="." instance=ExtResource("1_world")]
+[node name="GameRoot" type="Node2D" parent="." unique_id=564334073]
+y_sort_enabled = false
 
-[node name="Player" parent="." instance=ExtResource("2_player")]
-position = Vector2(0, 0)
+[node name="World" parent="GameRoot" unique_id=1860371091 instance=ExtResource("1_world")]
 
-[node name="Guide" type="CanvasLayer" parent="."]
+[node name="Player" parent="GameRoot" unique_id=1176642855 instance=ExtResource("2_player")]
 
-[node name="Hint" type="Label" parent="Guide"]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=437399985]
+zoom = Vector2(0.9, 0.9)
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+script = ExtResource("3_camera_follow")
+target_path = NodePath("../GameRoot/Player")
+
+[node name="Guide" type="CanvasLayer" parent="." unique_id=16146199]
+visible = true
+
+[node name="Hint" type="Label" parent="Guide" unique_id=839290611]
 offset_left = 16.0
 offset_top = 16.0
-offset_right = 430.0
-offset_bottom = 48.0
-text = "WASD / Arrow Keys: move"
+offset_right = 760.0
+offset_bottom = 56.0
+text = "Move: WASD/Arrow | Attack: Space/J | Dash: Shift/K"
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="PlayerHP" type="Label" parent="HUD"]
+offset_left = 16.0
+offset_top = 64.0
+offset_right = 260.0
+offset_bottom = 92.0
+text = "Player HP: 100 / 100"
+
+[node name="HPBar" type="ProgressBar" parent="HUD"]
+offset_left = 16.0
+offset_top = 92.0
+offset_right = 236.0
+offset_bottom = 110.0
+value = 100.0
+show_percentage = false
+
+[node name="DashLabel" type="Label" parent="HUD"]
+offset_left = 16.0
+offset_top = 116.0
+offset_right = 236.0
+offset_bottom = 140.0
+text = "Dash"
+
+[node name="DashBar" type="ProgressBar" parent="HUD"]
+offset_left = 16.0
+offset_top = 140.0
+offset_right = 236.0
+offset_bottom = 158.0
+value = 100.0
+show_percentage = false

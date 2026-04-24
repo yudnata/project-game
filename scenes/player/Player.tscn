@@ -1,20 +1,35 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player_script"]
+[ext_resource type="Texture2D" path="res://assets/art/player/player_idle_3q_down.svg" id="2_player_texture"]
 
 [sub_resource type="CircleShape2D" id="1_body_shape"]
 radius = 8.0
 
+[sub_resource type="RectangleShape2D" id="2_attack_shape"]
+size = Vector2(22, 14)
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_player_script")
+z_index = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("1_body_shape")
 
-[node name="Body" type="Polygon2D" parent="."]
-color = Color(0.18, 0.64, 0.33, 1)
-polygon = PackedVector2Array(-8, -12, 8, -12, 10, 4, 0, 12, -10, 4)
+[node name="Body" type="Sprite2D" parent="."]
+texture = ExtResource("2_player_texture")
+position = Vector2(0, -7)
+scale = Vector2(0.84, 0.84)
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, -16)
-enabled = true
+[node name="AttackArea2D" type="Area2D" parent="."]
+position = Vector2(0, 24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea2D"]
+shape = SubResource("2_attack_shape")
+disabled = true
+
+[node name="AttackFX" type="Polygon2D" parent="AttackArea2D"]
+visible = false
+position = Vector2(10, 0)
+color = Color(0.96, 0.96, 0.74, 0.6)
+polygon = PackedVector2Array(-6, -6, 12, 0, -6, 6)
