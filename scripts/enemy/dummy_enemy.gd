@@ -2,12 +2,12 @@ extends CharacterBody2D
 
 @export var max_hp: int = 30
 @export var move_speed: float = 80.0
-@export var chase_range: float = 220.0
-@export var attack_range: float = 20.0
+@export var chase_range: float = 10000.0
+@export var attack_range: float = 55.0
 @export var attack_damage: int = 8
 @export var attack_cooldown: float = 0.8
 @export var attack_windup: float = 0.18
-@export var knockback_force: float = 320.0
+@export var knockback_force: float = 400.0
 @export var knockback_duration: float = 0.22
 @export var too_close_distance: float = 14.0
 @export var attack_recoil_force: float = 85.0
@@ -21,12 +21,16 @@ var _knockback_remaining: float = 0.0
 var _flash_base_modulate: Color = Color.WHITE
 
 @onready var hp_label: Label = $HpLabel
+@onready var sprite: Sprite2D = $Body
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 func _ready() -> void:
+	add_to_group("enemy")
 	hp = max_hp
 	_flash_base_modulate = modulate
 	_update_hp_label()
 	_update_target()
+	_create_animations_programmatically()
 
 func _physics_process(delta: float) -> void:
 	if _knockback_remaining > 0.0:
@@ -62,8 +66,14 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		if _can_attack:
 			_attack_target()
+		elif not _is_playing_attack_anim():
+			_play_animation("Idle")
 	else:
 		velocity = to_target.normalized() * move_speed
+		if velocity.x != 0:
+			sprite.flip_h = velocity.x < 0
+		if not _is_playing_attack_anim():
+			_play_animation("Run")
 
 	move_and_slide()
 
@@ -86,13 +96,14 @@ func _update_target() -> void:
 
 func _attack_target() -> void:
 	_can_attack = false
+	_play_animation("Attack1")
 	if _target != null:
 		var recoil_dir := (global_position - _target.global_position).normalized()
 		_knockback_velocity = recoil_dir * attack_recoil_force
 		_knockback_remaining = attack_recoil_duration
 		modulate = Color(1.1, 0.85, 0.85, 1)
 		await get_tree().create_timer(attack_windup).timeout
-	if _target != null and _target.has_method("receive_hit"):
+	if _target != null and _target.has_method("receive_hit") and global_position.distance_to(_target.global_position) <= attack_range + 15.0:
 		_target.receive_hit(attack_damage, global_position)
 	modulate = _flash_base_modulate
 	await get_tree().create_timer(attack_cooldown).timeout
@@ -105,3 +116,59 @@ func _flash_hit() -> void:
 
 func _update_hp_label() -> void:
 	hp_label.text = "HP: %d" % hp
+
+func _is_playing_attack_anim() -> bool:
+	return animation_player and animation_player.is_playing() and animation_player.current_animation.begins_with("Attack")
+
+func _play_animation(anim_name: String) -> void:
+	if animation_player and animation_player.has_animation(anim_name):
+		if animation_player.current_animation != anim_name:
+			animation_player.play(anim_name)
+
+func _create_animations_programmatically() -> void:
+	if not animation_player: return
+	var library = AnimationLibrary.new()
+	var anim_data = {
+		"Idle": {"tex": "res://assets/Units/Red Units/Warrior/Warrior_Idle.png", "frames": 8, "loop": true, "speed": 10.0},
+		"Run": {"tex": "res://assets/Units/Red Units/Warrior/Warrior_Run.png", "frames": 6, "loop": true, "speed": 12.0},
+		"Attack1": {"tex": "res://assets/Units/Red Units/Warrior/Warrior_Attack1.png", "frames": 4, "loop": false, "speed": 15.0}
+	}
+
+	for anim_name in anim_data:
+		var info = anim_data[anim_name]
+		var anim = Animation.new()
+
+		var track_tex = anim.add_track(Animation.TYPE_VALUE)
+		anim.track_set_path(track_tex, "Body:texture")
+		anim.track_insert_key(track_tex, 0.0, load(info.tex))
+		anim.value_track_set_update_mode(track_tex, Animation.UPDATE_DISCRETE)
+
+
+		var track_h = anim.add_track(Animation.TYPE_VALUE)
+		anim.track_set_path(track_h, "Body:hframes")
+		anim.track_insert_key(track_h, 0.0, info.frames)
+		anim.value_track_set_update_mode(track_h, Animation.UPDATE_DISCRETE)
+
+		var track_v = anim.add_track(Animation.TYPE_VALUE)
+		anim.track_set_path(track_v, "Body:vframes")
+		anim.track_insert_key(track_v, 0.0, 1)
+		anim.value_track_set_update_mode(track_v, Animation.UPDATE_DISCRETE)
+
+
+		var track_frame = anim.add_track(Animation.TYPE_VALUE)
+		anim.track_set_path(track_frame, "Body:frame")
+		anim.value_track_set_update_mode(track_frame, Animation.UPDATE_DISCRETE)
+
+		var duration = info.frames / info.speed
+		anim.length = duration
+
+		for i in range(info.frames):
+			anim.track_insert_key(track_frame, i / info.speed, i)
+
+		if info.loop:
+			anim.loop_mode = Animation.LOOP_LINEAR
+
+		library.add_animation(anim_name, anim)
+
+	animation_player.add_animation_library("", library)
+	_play_animation("Idle")

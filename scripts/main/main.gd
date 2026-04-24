@@ -1,12 +1,13 @@
 extends Node2D
 
-@onready var player: CharacterBody2D = $GameRoot/Player
-@onready var hp_label: Label = $HUD/PlayerHP
-@onready var hp_bar: ProgressBar = $HUD/HPBar
-@onready var dash_label: Label = $HUD/DashLabel
-@onready var dash_bar: ProgressBar = $HUD/DashBar
+@onready var player: CharacterBody2D = $GameRoot/World/Player
+@onready var hp_bar: TextureProgressBar = $HUD/HPBar
+@onready var hp_label: Label = $HUD/HPBar/PlayerHP
+@onready var dash_bar: TextureProgressBar = $HUD/DashBar
+@onready var dash_label: Label = $HUD/DashBar/DashLabel
 
 func _ready() -> void:
+	Input.set_custom_mouse_cursor(load("res://assets/UI Elements/UI Elements/Cursors/Cursor_01.png"))
 	if player.has_signal("hp_changed"):
 		player.connect("hp_changed", _on_player_hp_changed)
 	if player.has_method("get_hp") and player.has_method("get_max_hp"):

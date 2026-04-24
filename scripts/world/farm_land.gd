@@ -3,10 +3,10 @@ extends Node2D
 const STATE_TILLED: int = 1
 const STATE_WATERED: int = 2
 
-@export var cell_size: int = 32
+@export var cell_size: int = 64
 @export var grid_width: int = 20
 @export var grid_height: int = 14
-@export var origin: Vector2 = Vector2(-320, -224)
+@export var origin: Vector2 = Vector2(-640, -448)
 
 var plot_states: Dictionary = {}
 
@@ -44,34 +44,6 @@ func _is_valid_cell(cell: Vector2i) -> bool:
 
 func _draw() -> void:
 	var area_size := Vector2(grid_width * cell_size, grid_height * cell_size)
-	var grass_base := Color(0.29, 0.56, 0.31, 1.0)
-	draw_rect(Rect2(origin, area_size), grass_base, true)
-	for y in range(grid_height):
-		for x in range(grid_width):
-			var cell_origin := origin + Vector2(x * cell_size, y * cell_size)
-			var mix_seed := (x * 928371 + y * 194811) % 7
-			var patch_color := Color(0.33, 0.62, 0.34, 0.24)
-			if mix_seed == 0:
-				patch_color = Color(0.42, 0.72, 0.40, 0.2)
-			elif mix_seed == 1:
-				patch_color = Color(0.23, 0.45, 0.26, 0.18)
-			elif mix_seed == 2:
-				patch_color = Color(0.55, 0.72, 0.32, 0.14)
-
-			var inset := 2.0 + float((x + y) % 3)
-			var patch_rect := Rect2(
-				cell_origin + Vector2(inset, inset),
-				Vector2(cell_size - inset * 2.0, cell_size - inset * 2.0)
-			)
-			draw_rect(patch_rect, patch_color, true)
-
-			if (x + y) % 4 == 0:
-				var grass_start := cell_origin + Vector2(6, 18)
-				var grass_end := cell_origin + Vector2(10, 10)
-				draw_line(grass_start, grass_end, Color(0.78, 0.9, 0.45, 0.28), 1.0)
-				if (x + y) % 8 == 0:
-					draw_circle(cell_origin + Vector2(9, 9), 1.4, Color(0.95, 0.66, 0.78, 0.85))
-
 	for y in range(grid_height):
 		for x in range(grid_width):
 			var cell := Vector2i(x, y)
