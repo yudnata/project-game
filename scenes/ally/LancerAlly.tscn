@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/ally/lancer_ally.gd" id="1_lancer_script"]
-[ext_resource type="Texture2D" path="res://assets/Units/Red Units/Lancer/Lancer_Idle.png" id="2_lancer_tex"]
+[ext_resource type="Texture2D" path="res://assets/Units/Blue Units/Lancer/Lancer_Idle.png" id="2_lancer_tex"]
 
 [sub_resource type="CircleShape2D" id="1_lancer_body_shape"]
 radius = 11.0

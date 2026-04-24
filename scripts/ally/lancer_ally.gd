@@ -175,6 +175,7 @@ func receive_hit(damage: int, source_position: Vector2 = Vector2.ZERO) -> void:
 
 func _die() -> void:
 	_is_dead = true
+	VFXManager.spawn_death_effect(global_position)
 	AudioManager.play_death()
 	set_physics_process(false)
 	collision_layer = 0
@@ -213,10 +214,8 @@ func _setup_animations() -> void:
 		return
 
 	var library = AnimationLibrary.new()
-	var base_path = "res://assets/Units/Red Units/Lancer/Lancer_"
-	# Note: Even though it's Blue Ally, we might want to use different assets if they exist, 
-	# but for now I'll use the Red ones as provided in the prompt's path.
-	# Wait, usually Blue is Ally, Red is Enemy.
+	var base_path = "res://assets/Units/Blue Units/Lancer/Lancer_"
+	
 	var anim_data = {
 		"Idle": {"tex": base_path + "Idle.png", "frames": 12, "loop": true, "speed": 10.0},
 		"Run": {"tex": base_path + "Run.png", "frames": 6, "loop": true, "speed": 12.0},

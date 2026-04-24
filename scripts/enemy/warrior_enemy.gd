@@ -136,6 +136,7 @@ func receive_hit(damage: int, source_position: Vector2 = Vector2.ZERO) -> void:
 
 func _die() -> void:
 	_is_dead = true
+	VFXManager.spawn_death_effect(global_position)
 	AudioManager.play_death()
 	set_physics_process(false)
 	# Disable collisions immediately
