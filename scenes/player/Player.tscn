@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player_script"]
+
+[sub_resource type="CircleShape2D" id="1_body_shape"]
+radius = 8.0
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_player_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1_body_shape")
+
+[node name="Body" type="Polygon2D" parent="."]
+color = Color(0.18, 0.64, 0.33, 1)
+polygon = PackedVector2Array(-8, -12, 8, -12, 10, 4, 0, 12, -10, 4)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -16)
+enabled = true

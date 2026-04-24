@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="RectangleShape2D" id="1_pond_shape"]
+size = Vector2(72, 52)
+
+[sub_resource type="RectangleShape2D" id="2_rock_shape"]
+size = Vector2(44, 30)
+
+[node name="World" type="Node2D"]
+
+[node name="Pond" type="StaticBody2D" parent="."]
+position = Vector2(140, 80)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pond"]
+shape = SubResource("1_pond_shape")
+
+[node name="Visual" type="Polygon2D" parent="Pond"]
+color = Color(0.15, 0.45, 0.86, 1)
+polygon = PackedVector2Array(-36, -26, 36, -26, 36, 26, -36, 26)
+
+[node name="Rock" type="StaticBody2D" parent="."]
+position = Vector2(-120, -20)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rock"]
+shape = SubResource("2_rock_shape")
+
+[node name="Visual" type="Polygon2D" parent="Rock"]
+color = Color(0.4, 0.4, 0.4, 1)
+polygon = PackedVector2Array(-22, -15, 22, -15, 22, 15, -22, 15)
