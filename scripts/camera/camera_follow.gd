@@ -21,7 +21,6 @@ func _process(delta: float) -> void:
 		_shake_intensity = lerp(_shake_intensity, 0.0, _shake_decay * delta)
 		var shake_offset = Vector2(randf_range(-1, 1), randf_range(-1, 1)) * _shake_intensity
 		target_pos += shake_offset
-
 	global_position = global_position.lerp(target_pos, clamp(follow_speed * delta, 0.0, 1.0))
 
 func shake(intensity: float, decay: float = 5.0) -> void:

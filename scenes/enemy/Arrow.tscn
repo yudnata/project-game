@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy/arrow.gd" id="1_arrow_script"]
+[ext_resource type="Texture2D" path="res://assets/Units/Red Units/Archer/Arrow.png" id="2_arrow_tex"]
+
+[sub_resource type="RectangleShape2D" id="1_arrow_shape"]
+size = Vector2(20, 6)
+
+[node name="Arrow" type="Area2D"]
+script = ExtResource("1_arrow_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_arrow_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0)
+shape = SubResource("1_arrow_shape")

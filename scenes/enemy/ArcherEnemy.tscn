@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://dummy7klpre41"]
+[gd_scene load_steps=6 format=3]
 
-[ext_resource type="Script" path="res://scripts/enemy/dummy_enemy.gd" id="1_enemy_script"]
-[ext_resource type="Texture2D" uid="uid://bqk15keb3tj0q" path="res://assets/Units/Red Units/Warrior/Warrior_Idle.png" id="2_enemy_tex"]
+[ext_resource type="Script" path="res://scripts/enemy/archer_enemy.gd" id="1_archer_script"]
+[ext_resource type="Texture2D" path="res://assets/Units/Red Units/Archer/Archer_Idle.png" id="2_archer_tex"]
 
 [sub_resource type="CircleShape2D" id="1_enemy_body_shape"]
 radius = 11.0
@@ -30,26 +30,26 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[node name="DummyEnemy" type="CharacterBody2D" unique_id=116587931]
-script = ExtResource("1_enemy_script")
+[node name="ArcherEnemy" type="CharacterBody2D"]
+script = ExtResource("1_archer_script")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=254168042]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("1_enemy_body_shape")
 
-[node name="Body" type="Sprite2D" parent="." unique_id=897539195]
+[node name="Body" type="Sprite2D" parent="."]
+texture = ExtResource("2_archer_tex")
 position = Vector2(0, -2)
-texture = ExtResource("2_enemy_tex")
-hframes = 8
+hframes = 6
 
-[node name="HealthBar" type="ProgressBar" parent="." unique_id=1369325408]
+[node name="HealthBar" type="ProgressBar" parent="."]
 offset_left = -18.0
 offset_top = 30.0
 offset_right = 18.0
 offset_bottom = 34.0
 theme_override_styles/background = SubResource("StyleBoxFlat_enemy_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_enemy_fill")
-max_value = 70.0
-value = 70.0
+max_value = 40.0
+value = 40.0
 show_percentage = false
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1892256385]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

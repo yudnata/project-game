@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var enemy_scene: PackedScene
+@export var enemy_scenes: Array[PackedScene] = []
 @export var spawn_interval: float = 5.0
 @export var spawn_distance_min: float = 350.0
 @export var spawn_distance_max: float = 600.0
@@ -15,7 +15,7 @@ func _process(delta: float) -> void:
 		_spawn_enemy()
 
 func _spawn_enemy() -> void:
-	if not enemy_scene:
+	if enemy_scenes.size() == 0:
 		return
 
 	if get_tree().get_nodes_in_group("enemy").size() >= max_enemies:
@@ -33,8 +33,9 @@ func _spawn_enemy() -> void:
 	var offset = Vector2(cos(angle), sin(angle)) * distance
 
 	var spawn_pos = player.global_position + offset
-
-	var enemy = enemy_scene.instantiate()
+	
+	var random_scene = enemy_scenes[randi() % enemy_scenes.size()]
+	var enemy = random_scene.instantiate()
 	enemy.global_position = spawn_pos
 
 	# Add the enemy as a sibling of the spawner (under the World node)

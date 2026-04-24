@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://b0yxcekaecxu7"]
 
-[ext_resource type="PackedScene" path="res://scenes/enemy/DummyEnemy.tscn" id="1_dummy_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/enemy/WarriorEnemy.tscn" id="1_warrior_enemy"]
 [ext_resource type="Texture2D" uid="uid://bie3qhcn45jnw" path="res://assets/Buildings/Blue Buildings/Castle.png" id="2_castle_tex"]
 [ext_resource type="Texture2D" uid="uid://dii7rhemcpwab" path="res://assets/Terrain/Resources/Wood/Trees/Tree1.png" id="3_tree_tex"]
 [ext_resource type="TileSet" uid="uid://c3lc6mk8drck0" path="res://assets/main_tileset.tres" id="4_tileset"]
 [ext_resource type="Script" uid="uid://byx3041v5veey" path="res://scripts/enemy/enemy_spawner.gd" id="5_spawner_script"]
+[ext_resource type="PackedScene" path="res://scenes/enemy/ArcherEnemy.tscn" id="6_archer_enemy"]
 
 [node name="World" type="Node2D" unique_id=1382881228]
 y_sort_enabled = true
@@ -231,12 +232,14 @@ texture = ExtResource("3_tree_tex")
 offset = Vector2(0, -128)
 hframes = 8
 
-[node name="DummyEnemy" parent="." unique_id=646274993 instance=ExtResource("1_dummy_enemy")]
+[node name="WarriorEnemy" parent="." unique_id=646274993 instance=ExtResource("1_warrior_enemy")]
 position = Vector2(-4, -299)
 
-[node name="DummyEnemy2" parent="." unique_id=1873153750 instance=ExtResource("1_dummy_enemy")]
+[node name="WarriorEnemy2" parent="." unique_id=1873153750 instance=ExtResource("1_warrior_enemy")]
 position = Vector2(-192, 157)
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=987654321]
 script = ExtResource("5_spawner_script")
-enemy_scene = ExtResource("1_dummy_enemy")
+enemy_scenes = Array[PackedScene]([ExtResource("1_warrior_enemy"), ExtResource("6_archer_enemy")])
+spawn_interval = 5.0
+max_enemies = 15

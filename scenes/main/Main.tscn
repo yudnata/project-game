@@ -23,7 +23,7 @@ y_sort_enabled = true
 [node name="Player" parent="GameRoot/World" unique_id=1176642855 instance=ExtResource("2_player")]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=437399985]
-zoom = Vector2(1.0, 1.0)
+zoom = Vector2(0.8, 0.8)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 script = ExtResource("3_camera_follow")
