@@ -22,7 +22,14 @@ func spawn_ally() -> void:
 
 	var random_val = randf()
 	var ally_scene
-	if ally_scenes.size() >= 2:
+	if ally_scenes.size() >= 3:
+		if random_val < 0.5:
+			ally_scene = ally_scenes[0] # Warrior
+		elif random_val < 0.7:
+			ally_scene = ally_scenes[1] # Archer
+		else:
+			ally_scene = ally_scenes[2] # Lancer
+	elif ally_scenes.size() == 2:
 		if random_val < 0.7:
 			ally_scene = ally_scenes[0] # Warrior
 		else:

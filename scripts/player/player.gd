@@ -89,7 +89,7 @@ func _physics_process(delta: float) -> void:
 	_update_animations(input_vector)
 	move_and_slide()
 
-	if Input.is_action_just_pressed("attack") and not _is_dashing:
+	if Input.is_action_pressed("attack") and not _is_dashing:
 		if _is_attacking:
 			_attack_input_buffered = true
 		else:
@@ -141,7 +141,7 @@ func _perform_attack() -> void:
 	if animation_player.has_animation(anim_name):
 		animation_player.play(anim_name)
 	_combo_count += 1
-	
+
 	AudioManager.play_sfx("sword_swing")
 
 	# Attack Lunge - gives fluidity and movement during attack
@@ -156,6 +156,7 @@ func _perform_attack() -> void:
 		for body in attack_area.get_overlapping_bodies():
 			if body != self and body.has_method("receive_hit") and not body in hit_bodies:
 				body.receive_hit(attack_damage, global_position)
+				_spawn_damage_indicator(attack_damage, body.global_position, Color(1, 1, 0.4)) # Yellow for dealing damage
 				hit_bodies.append(body)
 				if not has_hit:
 					_hit_stop(0.05)
@@ -238,6 +239,10 @@ func _create_animations_programmatically() -> void:
 	animation_player.play("Idle")
 
 func _update_animations(input_vector: Vector2) -> void:
+	# Always allow flipping the sprite based on input, even while attacking
+	if input_vector.x != 0:
+		sprite.flip_h = input_vector.x < 0
+
 	if _is_attacking or _is_dashing:
 		return
 
@@ -271,13 +276,15 @@ func receive_hit(damage: int, source_position: Vector2 = Vector2.ZERO) -> void:
 	_hp = max(_hp - damage, 0)
 	_update_health_bar()
 	hp_changed.emit(_hp, max_hp)
+	_spawn_damage_indicator(damage, global_position, Color(1, 0.25, 0.25)) # Red for taking damage
+
 	if _hp <= 0:
 		_respawn_player()
 		return
 
 	_is_invulnerable = true
 	AudioManager.play_impact_melee()
-	
+
 	if source_position != Vector2.ZERO:
 		var knock_dir := (global_position - source_position).normalized()
 		_knockback_velocity = knock_dir * knockback_force
@@ -294,6 +301,35 @@ func _respawn_player() -> void:
 	hp_changed.emit(_hp, max_hp)
 	global_position = Vector2.ZERO
 	velocity = Vector2.ZERO
+
+func _spawn_damage_indicator(amount: int, pos: Vector2, color: Color) -> void:
+	var label = Label.new()
+	label.text = str(amount)
+
+	# Premium look for damage numbers
+	label.add_theme_color_override("font_color", color)
+	label.add_theme_font_size_override("font_size", 22)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+
+	# Initial position above target head
+	label.global_position = pos + Vector2(-25, -60)
+	label.z_index = 100
+
+	# Add to world scene so it doesn't move with target
+	get_tree().current_scene.add_child(label)
+
+	var tween = get_tree().create_tween()
+	tween.set_parallel(true)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.set_trans(Tween.TRANS_QUART)
+
+	# Animate float up and fade out
+	tween.tween_property(label, "global_position:y", label.global_position.y - 50, 0.7)
+	tween.tween_property(label, "modulate:a", 0.0, 0.7)
+	tween.tween_property(label, "scale", Vector2(1.2, 1.2), 0.2).from(Vector2(0.8, 0.8))
+
+	tween.set_parallel(false)
+	tween.tween_callback(label.queue_free)
 
 func _update_health_bar() -> void:
 	if health_bar:

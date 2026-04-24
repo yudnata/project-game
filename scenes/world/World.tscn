@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://dsg4viedief24" path="res://scripts/ally/ally_spawner.gd" id="7_ally_spawner_script"]
 [ext_resource type="PackedScene" path="res://scenes/ally/WarriorAlly.tscn" id="8_warrior_ally"]
 [ext_resource type="PackedScene" path="res://scenes/ally/ArcherAlly.tscn" id="9_archer_ally"]
+[ext_resource type="PackedScene" path="res://scenes/enemy/LancerEnemy.tscn" id="10_lancer_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/ally/LancerAlly.tscn" id="11_lancer_ally"]
 
 [node name="World" type="Node2D" unique_id=1382881228]
 y_sort_enabled = true
@@ -243,12 +245,12 @@ position = Vector2(-192, 157)
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=987654321]
 script = ExtResource("5_spawner_script")
-enemy_scenes = Array[PackedScene]([ExtResource("1_warrior_enemy"), ExtResource("6_archer_enemy")])
-spawn_interval = 1.0
-max_enemies = 30
+enemy_scenes = Array[PackedScene]([ExtResource("1_warrior_enemy"), ExtResource("6_archer_enemy"), ExtResource("10_lancer_enemy")])
+spawn_interval = 0.5
+max_enemies = 60
 
 [node name="AllySpawner" type="Node2D" parent="." unique_id=1122334455]
 script = ExtResource("7_ally_spawner_script")
-ally_scenes = Array[PackedScene]([ExtResource("8_warrior_ally"), ExtResource("9_archer_ally")])
-spawn_interval = 2.0
-max_allies = 15
+ally_scenes = Array[PackedScene]([ExtResource("8_warrior_ally"), ExtResource("9_archer_ally"), ExtResource("11_lancer_ally")])
+spawn_interval = 0.7
+max_allies = 30

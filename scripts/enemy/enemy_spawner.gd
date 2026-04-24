@@ -36,11 +36,18 @@ func _spawn_enemy() -> void:
 
 	var random_val = randf()
 	var random_scene
-	if enemy_scenes.size() >= 2:
-		if random_val < 0.7:
+	if enemy_scenes.size() >= 3:
+		if random_val < 0.5:
 			random_scene = enemy_scenes[0] # Warrior
-		else:
+		elif random_val < 0.7:
 			random_scene = enemy_scenes[1] # Archer
+		else:
+			random_scene = enemy_scenes[2] # Lancer
+	elif enemy_scenes.size() == 2:
+		if random_val < 0.7:
+			random_scene = enemy_scenes[0]
+		else:
+			random_scene = enemy_scenes[1]
 	else:
 		random_scene = enemy_scenes[randi() % enemy_scenes.size()]
 
