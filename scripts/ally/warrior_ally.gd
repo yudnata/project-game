@@ -84,7 +84,7 @@ func _find_target_enemy() -> void:
 				closest_dist = dist
 				_target_enemy = enemy
 
-func _handle_enemy_combat(delta: float) -> void:
+func _handle_enemy_combat(_delta: float) -> void:
 	var to_enemy = _target_enemy.global_position - global_position
 	var dist = to_enemy.length()
 
