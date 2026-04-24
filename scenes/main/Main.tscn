@@ -31,83 +31,38 @@ target_path = NodePath("../GameRoot/World/Player")
 
 [node name="Guide" type="CanvasLayer" parent="." unique_id=16146199]
 
-[node name="HUD" type="CanvasLayer" parent="." unique_id=1353895524]
-
-[node name="HPBar" type="TextureProgressBar" parent="HUD" unique_id=740895593]
-offset_left = 16.0
-offset_top = 92.0
-offset_right = 236.0
-offset_bottom = 120.0
-value = 100.0
-nine_patch_stretch = true
-texture_under = ExtResource("6_bar_base")
-texture_progress = ExtResource("7_bar_fill")
-
-[node name="PlayerHP" type="Label" parent="HUD/HPBar" unique_id=736433306]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -110.0
-offset_top = -14.0
-offset_right = 110.0
-offset_bottom = 14.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "HP: 100 / 100"
-horizontal_alignment = 1
-
-[node name="DashBar" type="TextureProgressBar" parent="HUD" unique_id=2022795489]
-offset_left = 16.0
-offset_top = 130.0
-offset_right = 236.0
-offset_bottom = 148.0
-value = 100.0
-nine_patch_stretch = true
-texture_under = ExtResource("6_bar_base")
-texture_progress = ExtResource("7_bar_fill")
-tint_progress = Color(0.2, 0.8, 1, 1)
-
-[node name="DashLabel" type="Label" parent="HUD/DashBar" unique_id=1951836313]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -110.0
-offset_top = -12.0
-offset_right = 110.0
-offset_bottom = 12.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Dash"
-horizontal_alignment = 1
-
 [node name="MobileControls" type="CanvasLayer" parent="."]
 
 [node name="VirtualJoystick" parent="MobileControls" instance=ExtResource("8_joystick")]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 64.0
-offset_top = -184.0
-offset_right = 184.0
-offset_bottom = -64.0
+offset_left = 50.0
+offset_top = -320.0
+offset_right = 350.0
+offset_bottom = -20.0
 grow_vertical = 0
 
-[node name="AttackButton" type="TouchScreenButton" parent="MobileControls"]
-position = Vector2(980, 480)
-scale = Vector2(1.5, 1.5)
+[node name="RightControls" type="Control" parent="MobileControls"]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="AttackButton" type="TouchScreenButton" parent="MobileControls/RightControls"]
+position = Vector2(-220, -240)
+scale = Vector2(2.0, 2.0)
 texture_normal = ExtResource("9_btn_red")
 texture_pressed = ExtResource("10_btn_red_p")
 action = "attack"
 
-[node name="DashButton" type="TouchScreenButton" parent="MobileControls"]
-position = Vector2(850, 540)
-scale = Vector2(1.2, 1.2)
+[node name="DashButton" type="TouchScreenButton" parent="MobileControls/RightControls"]
+position = Vector2(-380, -160)
+scale = Vector2(1.5, 1.5)
 texture_normal = ExtResource("11_btn_blue")
 texture_pressed = ExtResource("12_btn_blue_p")
 action = "dash"

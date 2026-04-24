@@ -36,6 +36,8 @@ var _combo_count: int = 0
 @onready var attack_fx: Polygon2D = $AttackArea2D/AttackFX
 @onready var sprite: Sprite2D = $Body
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var health_bar: ProgressBar = $HealthBar
+@onready var direction_indicator: Node2D = $DirectionIndicator
 
 func _ready() -> void:
 	add_to_group("player")
@@ -44,6 +46,7 @@ func _ready() -> void:
 	attack_collision.disabled = true
 	attack_fx.visible = false
 	_hp = max_hp
+	_update_health_bar()
 	hp_changed.emit(_hp, max_hp)
 
 func _physics_process(delta: float) -> void:
@@ -63,8 +66,11 @@ func _physics_process(delta: float) -> void:
 	var input_vector := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	if input_vector.length() > 0.1:
 		_facing_direction = input_vector.normalized()
+		direction_indicator.rotation = _facing_direction.angle()
 	else:
-		input_vector = Vector2.ZERO # Force zero if tiny
+		input_vector = Vector2.ZERO
+
+	direction_indicator.visible = true
 
 	if Input.is_action_just_pressed("dash") and _dash_available and not _is_attacking:
 		_start_dash(input_vector)
@@ -259,6 +265,7 @@ func receive_hit(damage: int, source_position: Vector2 = Vector2.ZERO) -> void:
 		return
 
 	_hp = max(_hp - damage, 0)
+	_update_health_bar()
 	hp_changed.emit(_hp, max_hp)
 	if _hp <= 0:
 		_respawn_player()
@@ -277,9 +284,15 @@ func receive_hit(damage: int, source_position: Vector2 = Vector2.ZERO) -> void:
 
 func _respawn_player() -> void:
 	_hp = max_hp
+	_update_health_bar()
 	hp_changed.emit(_hp, max_hp)
 	global_position = Vector2.ZERO
 	velocity = Vector2.ZERO
+
+func _update_health_bar() -> void:
+	if health_bar:
+		health_bar.max_value = max_hp
+		health_bar.value = _hp
 
 func get_hp() -> int:
 	return _hp

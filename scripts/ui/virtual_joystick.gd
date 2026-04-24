@@ -1,6 +1,6 @@
 extends Control
 
-@export var max_distance: float = 40.0
+@export var max_distance: float = 120.0
 @export var action_left: String = "move_left"
 @export var action_right: String = "move_right"
 @export var action_up: String = "move_up"
@@ -40,10 +40,10 @@ func _update_input(pos: Vector2) -> void:
 	var offset = pos - _start_pos
 	if offset.length() > max_distance:
 		offset = offset.normalized() * max_distance
-	
+
 	_current_pos = _start_pos + offset
 	_update_knob()
-	
+
 	if _is_active:
 		var normalized = offset / max_distance
 		_send_action(action_right, max(normalized.x, 0.0))

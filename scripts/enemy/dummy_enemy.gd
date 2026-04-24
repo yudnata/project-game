@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@export var max_hp: int = 30
+@export var max_hp: int = 50
 @export var move_speed: float = 80.0
 @export var chase_range: float = 10000.0
 @export var attack_range: float = 55.0
@@ -20,15 +20,15 @@ var _knockback_velocity: Vector2 = Vector2.ZERO
 var _knockback_remaining: float = 0.0
 var _flash_base_modulate: Color = Color.WHITE
 
-@onready var hp_label: Label = $HpLabel
 @onready var sprite: Sprite2D = $Body
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var health_bar: ProgressBar = $HealthBar
 
 func _ready() -> void:
 	add_to_group("enemy")
 	hp = max_hp
 	_flash_base_modulate = modulate
-	_update_hp_label()
+	_update_health_bar()
 	_update_target()
 	_create_animations_programmatically()
 
@@ -79,7 +79,7 @@ func _physics_process(delta: float) -> void:
 
 func receive_hit(damage: int, source_position: Vector2 = Vector2.ZERO) -> void:
 	hp = max(hp - damage, 0)
-	_update_hp_label()
+	_update_health_bar()
 	_flash_hit()
 	if source_position != Vector2.ZERO:
 		var knock_dir := (global_position - source_position).normalized()
@@ -114,8 +114,10 @@ func _flash_hit() -> void:
 	await get_tree().create_timer(0.08).timeout
 	modulate = _flash_base_modulate
 
-func _update_hp_label() -> void:
-	hp_label.text = "HP: %d" % hp
+func _update_health_bar() -> void:
+	if health_bar:
+		health_bar.max_value = max_hp
+		health_bar.value = hp
 
 func _is_playing_attack_anim() -> bool:
 	return animation_player and animation_player.is_playing() and animation_player.current_animation.begins_with("Attack")
