@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/ally/ally_arrow.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/Units/Red Units/Archer/Arrow.png" id="2_tex"]
+
+[sub_resource type="CapsuleShape2D" id="1"]
+radius = 3.0
+height = 14.0
+
+[node name="AllyArrow" type="Area2D"]
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("1")

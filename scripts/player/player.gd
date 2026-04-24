@@ -38,6 +38,7 @@ var _combo_count: int = 0
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var health_bar: ProgressBar = $HealthBar
 @onready var direction_indicator: Node2D = $DirectionIndicator
+@onready var _camera = get_tree().get_first_node_in_group("camera")
 
 func _ready() -> void:
 	add_to_group("player")
@@ -120,6 +121,8 @@ func _start_dash(input_vector: Vector2) -> void:
 	else:
 		_dash_direction = _facing_direction.normalized()
 
+	AudioManager.play_sfx("player_dash")
+
 	await get_tree().create_timer(dash_duration).timeout
 	_is_dashing = false
 	_dash_cooldown_remaining = dash_cooldown
@@ -138,6 +141,8 @@ func _perform_attack() -> void:
 	if animation_player.has_animation(anim_name):
 		animation_player.play(anim_name)
 	_combo_count += 1
+	
+	AudioManager.play_sfx("sword_swing")
 
 	# Attack Lunge - gives fluidity and movement during attack
 	velocity = attack_direction * attack_lunge_force
@@ -154,9 +159,8 @@ func _perform_attack() -> void:
 				hit_bodies.append(body)
 				if not has_hit:
 					_hit_stop(0.05)
-					var camera = get_tree().get_first_node_in_group("camera")
-					if camera and camera.has_method("shake"):
-						camera.shake(5.0)
+					if _camera and _camera.has_method("shake"):
+						_camera.shake(5.0)
 					has_hit = true
 
 	attack_collision.disabled = true
@@ -176,7 +180,7 @@ func _perform_attack() -> void:
 			animation_player.play("Idle")
 
 func _hit_stop(duration: float) -> void:
-	Engine.time_scale = 0.05
+	Engine.time_scale = 0.3
 	await get_tree().create_timer(duration, true, false, true).timeout
 	Engine.time_scale = 1.0
 
@@ -272,6 +276,8 @@ func receive_hit(damage: int, source_position: Vector2 = Vector2.ZERO) -> void:
 		return
 
 	_is_invulnerable = true
+	AudioManager.play_impact_melee()
+	
 	if source_position != Vector2.ZERO:
 		var knock_dir := (global_position - source_position).normalized()
 		_knockback_velocity = knock_dir * knockback_force

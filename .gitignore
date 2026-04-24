@@ -1,3 +1,30 @@
 # Godot 4+ specific ignores
 .godot/
-/android/
+
+# Build and export folders
+/export/
+android/
+
+# Editor-specific ignores
+.import/
+*.tmp
+*.log
+
+# User-specific configuration
+.vscode/
+.idea/
+*.swp
+
+# AI and Project Metadata
+.gemini/
+.antigravity/
+
+# macOS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
+desktop.ini
+
+# Common export presets and data (Keep export_presets.cfg if you want to share export settings)
+# export_presets.cfg

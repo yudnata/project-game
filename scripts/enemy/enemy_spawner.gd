@@ -33,8 +33,17 @@ func _spawn_enemy() -> void:
 	var offset = Vector2(cos(angle), sin(angle)) * distance
 
 	var spawn_pos = player.global_position + offset
-	
-	var random_scene = enemy_scenes[randi() % enemy_scenes.size()]
+
+	var random_val = randf()
+	var random_scene
+	if enemy_scenes.size() >= 2:
+		if random_val < 0.7:
+			random_scene = enemy_scenes[0] # Warrior
+		else:
+			random_scene = enemy_scenes[1] # Archer
+	else:
+		random_scene = enemy_scenes[randi() % enemy_scenes.size()]
+
 	var enemy = random_scene.instantiate()
 	enemy.global_position = spawn_pos
 
